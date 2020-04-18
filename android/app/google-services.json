@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "178162722147",
+    "firebase_url": "https://phone-to-web.firebaseio.com",
+    "project_id": "phone-to-web",
+    "storage_bucket": "phone-to-web.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178162722147:android:f157a60aeed79fdc269f56",
+        "android_client_info": {
+          "package_name": "com.example.phone2web"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178162722147-p9kevrnmdn04nm42cp4mt2n4uch86oma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1x5adkq3z8dvFhBjzuVckBDF3_6OSYZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178162722147-p9kevrnmdn04nm42cp4mt2n4uch86oma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
