@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phone2web/styles/constants.dart';
+import 'package:phone2web/components/appbar.dart';
+import 'package:phone2web/components/sidedrawer.dart';
 
 class IdCodeScreen extends StatelessWidget {
   static String id = 'idcodescreen';
@@ -10,12 +12,23 @@ class IdCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: GlobalAppBar(),
+      drawer: GlobalDrawer(),
       body: SafeArea(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            linkID.toString(),
-            style: kTextHeaderStyle,
+          Center(
+            child: Text(
+              "Your ID Code:",
+              style: kTextHeaderStyle,
+            ),
+          ),
+          Center(
+            child: Text(
+              linkID.toString(),
+              style: kTextHeaderStyle,
+            ),
           ),
         ],
       )),

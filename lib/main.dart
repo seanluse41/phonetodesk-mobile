@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/introscreen.dart';
 import 'screens/gottextscreen.dart';
 import 'screens/idcodescreen.dart';
+import 'screens/aboutscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         IdCodeScreen.id: (context) => IdCodeScreen(
               linkID: 0,
             ),
+        AboutScreen.id: (context) => AboutScreen(),
       },
     );
   }
