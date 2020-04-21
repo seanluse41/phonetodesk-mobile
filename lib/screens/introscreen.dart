@@ -34,98 +34,100 @@ class _IntroScreenState extends State<IntroScreen> {
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              Column(
-                children: [
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  Text(
-                    "Store Text Here",
-                    style: TextStyle(fontSize: 35.0),
-                  ),
-                  TextField(
-                    controller: _linkController,
-                    onChanged: (value) {
-                      linkText = value;
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Enter your text here',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _linkController.clear();
-                        },
-                      ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: <Widget>[
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 50.0,
                     ),
-                  ),
-                  Container(
-                    width: 110.0,
-                    child: MaterialButton(
-                        color: Colors.teal,
-                        elevation: 10.0,
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              "Send",
-                              style: kButtonTextStyle,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
+                    Text(
+                      "Store Text Here",
+                      style: TextStyle(fontSize: 35.0),
+                    ),
+                    TextField(
+                      controller: _linkController,
+                      onChanged: (value) {
+                        linkText = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter your text here',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _linkController.clear();
+                          },
                         ),
-                        onPressed: () {
-                          showSpinner = true;
-                          _firestore
-                              .collection('links')
-                              .add({
-                                'link': linkText,
-                                'id': linkCode,
-                              })
-                              .whenComplete(() => _linkController.clear())
-                              .then((value) => showSpinner = false)
-                              .then((value) => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          IdCodeScreen(linkID: linkCode),
-                                    ),
-                                  ));
-                        }),
-                  ),
-                  SizedBox(
-                    height: 100.0,
-                  ),
-                  Text(
-                    "Get Text Back",
-                    style: kTextHeaderStyle,
-                  ),
-                  TextField(
-                    controller: _codeController,
-                    maxLength: 5,
-                    keyboardType: TextInputType.number,
-                    onChanged: (code) {
-                      linkCode = int.parse(code);
-                      print(linkCode);
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Enter your 5 digit code here',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _codeController.clear();
-                        },
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 110.0,
-                    child: MaterialButton(
+                    Container(
+                      width: 110.0,
+                      child: MaterialButton(
+                          color: Colors.teal,
+                          elevation: 10.0,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Send",
+                                style: kButtonTextStyle,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                          onPressed: () {
+                            showSpinner = true;
+                            _firestore
+                                .collection('links')
+                                .add({
+                                  'link': linkText,
+                                  'id': linkCode,
+                                })
+                                .whenComplete(() => _linkController.clear())
+                                .then((value) => showSpinner = false)
+                                .then((value) => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            IdCodeScreen(linkID: linkCode),
+                                      ),
+                                    ));
+                          }),
+                    ),
+                    SizedBox(
+                      height: 100.0,
+                    ),
+                    Text(
+                      "Get Text Back",
+                      style: kTextHeaderStyle,
+                    ),
+                    TextField(
+                      controller: _codeController,
+                      maxLength: 5,
+                      keyboardType: TextInputType.number,
+                      onChanged: (code) {
+                        linkCode = int.parse(code);
+                        print(linkCode);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter your 5 digit code here',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _codeController.clear();
+                          },
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 110.0,
+                      child: MaterialButton(
                         color: Colors.teal,
                         elevation: 10.0,
                         child: Row(
@@ -159,11 +161,13 @@ class _IntroScreenState extends State<IntroScreen> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   GotTextScreen(link: linkText)));
-                        }),
-                  )
-                ],
-              ),
-            ],
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
