@@ -113,7 +113,14 @@ class _IntroScreenState extends State<IntroScreen> {
                       keyboardType: TextInputType.number,
                       onChanged: (code) {
                         linkCode = int.parse(code);
-                        print(linkCode);
+                        _firestore
+                            .collection('links')
+                            .where("id", isEqualTo: linkCode)
+                            .snapshots()
+                            .listen(
+                                (event) => event.documents.forEach((element) {
+                                      linkText = element['link'];
+                                    }));
                       },
                       decoration: InputDecoration(
                         hintText: 'Enter your 5 digit code here',
@@ -146,18 +153,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           ],
                         ),
                         onPressed: () async {
-                          showSpinner = true;
-                          _firestore
-                              .collection('links')
-                              .where("id", isEqualTo: linkCode)
-                              .snapshots()
-                              .listen(
-                                  (event) => event.documents.forEach((element) {
-                                        linkText = element['link'];
-                                      }));
-                          showSpinner = false;
                           _codeController.clear();
-
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   GotTextScreen(link: linkText)));
