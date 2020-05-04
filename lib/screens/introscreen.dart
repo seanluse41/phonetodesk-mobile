@@ -84,6 +84,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           ),
                           onPressed: () {
                             showSpinner = true;
+                            int linkCode = Random().nextInt(99999);
                             _firestore
                                 .collection('links')
                                 .add({
