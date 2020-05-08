@@ -18,16 +18,20 @@ class IdCodeScreen extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Text(
-              "Your ID Code:",
-              style: kTextHeaderStyle,
-            ),
+          Text(
+            "Your ID Code:",
+            style: kTextHeaderStyle,
+          ),
+          Text(
+            linkID.toString(),
+            style: kTextHeaderStyle,
+          ),
+          SizedBox(
+            height: 30,
           ),
           Center(
             child: Text(
-              linkID.toString(),
-              style: kTextHeaderStyle,
+              "Head to www.phonetodesk.com to get your text back later.",
             ),
           ),
         ],

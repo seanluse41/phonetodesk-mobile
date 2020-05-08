@@ -83,8 +83,10 @@ class _IntroScreenState extends State<IntroScreen> {
                           ],
                         ),
                         onPressed: () async {
+                          showSpinner = true;
                           linkCode = await _fireStore.getCode(linkText);
                           print(linkCode);
+                          showSpinner = false;
                           _linkController.clear();
                           Navigator.push(
                               context,
@@ -107,7 +109,6 @@ class _IntroScreenState extends State<IntroScreen> {
                       keyboardType: TextInputType.number,
                       onChanged: (code) {
                         linkCode = int.parse(code);
-                        print(linkCode);
                       },
                       decoration: InputDecoration(
                         hintText: 'Enter your 5 digit code here',
@@ -140,9 +141,11 @@ class _IntroScreenState extends State<IntroScreen> {
                           ],
                         ),
                         onPressed: () async {
+                          showSpinner = true;
                           linkText = await _fireStore.getLink(linkCode);
                           print(linkText);
                           _codeController.clear();
+                          showSpinner = false;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
