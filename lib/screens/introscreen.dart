@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:phone2web/components/appbar.dart';
@@ -10,6 +8,8 @@ import 'package:phone2web/screens/idcodescreen.dart';
 import 'package:phone2web/screens/gottextscreen.dart';
 import 'package:phone2web/styles/constants.dart';
 
+import 'package:phone2web/services/firestore.dart';
+
 class IntroScreen extends StatefulWidget {
   static String id = 'introscreen';
 
@@ -18,13 +18,13 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  final _firestore = Firestore.instance;
   final _linkController = new TextEditingController();
   final _codeController = new TextEditingController();
 
   bool showSpinner = false;
-  String linkText = "";
-  int linkCode = Random().nextInt(99999);
+  String linkText;
+  int linkCode;
+  var _fireStore = FireStoreProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -65,40 +65,34 @@ class _IntroScreenState extends State<IntroScreen> {
                     Container(
                       width: 110.0,
                       child: MaterialButton(
-                          color: Colors.teal,
-                          elevation: 10.0,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                "Send",
-                                style: kButtonTextStyle,
+                        color: Colors.teal,
+                        elevation: 10.0,
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              "Send",
+                              style: kButtonTextStyle,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Icon(
+                                Icons.send,
+                                color: Colors.white,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Icon(
-                                  Icons.send,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ),
-                          onPressed: () {
-                            showSpinner = true;
-                            _firestore
-                                .collection('links')
-                                .add({
-                                  'link': linkText,
-                                  'id': linkCode,
-                                })
-                                .whenComplete(() => _linkController.clear())
-                                .then((value) => showSpinner = false)
-                                .then((value) => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            IdCodeScreen(linkID: linkCode),
-                                      ),
-                                    ));
-                          }),
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          linkCode = await _fireStore.getCode(linkText);
+                          print(linkCode);
+                          _linkController.clear();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      IdCodeScreen(linkID: linkCode)));
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 100.0,
@@ -146,24 +140,17 @@ class _IntroScreenState extends State<IntroScreen> {
                           ],
                         ),
                         onPressed: () async {
-                          showSpinner = true;
-                          _firestore
-                              .collection('links')
-                              .where("id", isEqualTo: linkCode)
-                              .snapshots()
-                              .listen(
-                                  (event) => event.documents.forEach((element) {
-                                        linkText = element['link'];
-                                      }));
-                          showSpinner = false;
+                          linkText = await _fireStore.getLink(linkCode);
+                          print(linkText);
                           _codeController.clear();
-
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  GotTextScreen(link: linkText)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      GotTextScreen(link: linkText)));
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],
