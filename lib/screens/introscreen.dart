@@ -21,6 +21,8 @@ class _IntroScreenState extends State<IntroScreen> {
   final _linkController = new TextEditingController();
   final _codeController = new TextEditingController();
 
+  bool _textBtnEnabled = false;
+  bool _codeBtnEnabled = false;
   bool showSpinner = false;
   String linkText;
   int linkCode;
@@ -47,10 +49,19 @@ class _IntroScreenState extends State<IntroScreen> {
                       "Store Text Here",
                       style: TextStyle(fontSize: 35.0),
                     ),
-                    TextField(
+                    TextFormField(
                       controller: _linkController,
                       onChanged: (value) {
                         linkText = value;
+                        if (linkText != "") {
+                          setState(() {
+                            _textBtnEnabled = true;
+                          });
+                        } else {
+                          setState(() {
+                            _textBtnEnabled = false;
+                          });
+                        }
                       },
                       decoration: InputDecoration(
                         hintText: 'Enter your text here',
@@ -82,33 +93,44 @@ class _IntroScreenState extends State<IntroScreen> {
                             )
                           ],
                         ),
-                        onPressed: () async {
-                          showSpinner = true;
-                          linkCode = await _fireStore.getCode(linkText);
-                          print(linkCode);
-                          showSpinner = false;
-                          _linkController.clear();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      IdCodeScreen(linkID: linkCode)));
-                        },
+                        onPressed: _textBtnEnabled == true
+                            ? () async {
+                                showSpinner = true;
+                                linkCode = await _fireStore.getCode(linkText);
+                                print(linkCode);
+                                showSpinner = false;
+                                _linkController.clear();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            IdCodeScreen(linkID: linkCode)));
+                              }
+                            : null, //null button if link text is == ""
                       ),
                     ),
                     SizedBox(
-                      height: 100.0,
+                      height: 40.0,
                     ),
                     Text(
                       "Get Text Back",
                       style: kTextHeaderStyle,
                     ),
-                    TextField(
+                    TextFormField(
                       controller: _codeController,
                       maxLength: 5,
                       keyboardType: TextInputType.number,
                       onChanged: (code) {
                         linkCode = int.parse(code);
+                        if (linkCode != null || linkCode > 0) {
+                          setState(() {
+                            _codeBtnEnabled = true;
+                          });
+                        } else {
+                          setState(() {
+                            _codeBtnEnabled = false;
+                          });
+                        }
                       },
                       decoration: InputDecoration(
                         hintText: 'Enter your 5 digit code here',
@@ -116,6 +138,10 @@ class _IntroScreenState extends State<IntroScreen> {
                           icon: Icon(Icons.delete),
                           onPressed: () {
                             _codeController.clear();
+                            setState(() {
+                              linkCode = null;
+                              _codeBtnEnabled = false;
+                            });
                           },
                         ),
                       ),
@@ -123,36 +149,37 @@ class _IntroScreenState extends State<IntroScreen> {
                     Container(
                       width: 110.0,
                       child: MaterialButton(
-                        color: Colors.teal,
-                        elevation: 10.0,
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              "Get",
-                              style: kButtonTextStyle,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Icon(
-                                Icons.cloud_download,
-                                color: Colors.white,
+                          color: Colors.teal,
+                          elevation: 10.0,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Get",
+                                style: kButtonTextStyle,
                               ),
-                            )
-                          ],
-                        ),
-                        onPressed: () async {
-                          showSpinner = true;
-                          linkText = await _fireStore.getLink(linkCode);
-                          print(linkText);
-                          _codeController.clear();
-                          showSpinner = false;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      GotTextScreen(link: linkText)));
-                        },
-                      ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: Icon(
+                                  Icons.cloud_download,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                          onPressed: _codeBtnEnabled == true
+                              ? () async {
+                                  showSpinner = true;
+                                  linkText = await _fireStore.getLink(linkCode);
+                                  print(linkText);
+                                  _codeController.clear();
+                                  showSpinner = false;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              GotTextScreen(link: linkText)));
+                                }
+                              : null),
                     ),
                   ],
                 ),
