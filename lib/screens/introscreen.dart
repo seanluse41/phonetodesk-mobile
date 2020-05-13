@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import 'package:phone2web/services/firestore.dart';
 
 import 'package:phone2web/components/appbar.dart';
 import 'package:phone2web/components/sidedrawer.dart';
+import 'package:phone2web/components/getcodebutton.dart';
+import 'package:phone2web/components/gettextbutton.dart';
+import 'package:phone2web/components/disabledcodebutton.dart';
+import 'package:phone2web/components/disabledtextbutton.dart';
 
-import 'package:phone2web/screens/idcodescreen.dart';
-import 'package:phone2web/screens/gottextscreen.dart';
 import 'package:phone2web/styles/constants.dart';
-
-import 'package:phone2web/services/firestore.dart';
 
 class IntroScreen extends StatefulWidget {
   static String id = 'introscreen';
@@ -18,6 +21,8 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  final _fireStore = FireStoreProvider();
+
   final _linkController = new TextEditingController();
   final _codeController = new TextEditingController();
 
@@ -26,7 +31,6 @@ class _IntroScreenState extends State<IntroScreen> {
   bool showSpinner = false;
   String linkText;
   int linkCode;
-  var _fireStore = FireStoreProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -69,45 +73,21 @@ class _IntroScreenState extends State<IntroScreen> {
                           icon: Icon(Icons.delete),
                           onPressed: () {
                             _linkController.clear();
+                            setState(() {
+                              _textBtnEnabled = false;
+                            });
                           },
                         ),
                       ),
                     ),
                     Container(
                       width: 110.0,
-                      child: MaterialButton(
-                        color: Colors.teal,
-                        elevation: 10.0,
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              "Send",
-                              style: kButtonTextStyle,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
+                      child: _textBtnEnabled
+                          ? GetCodeButton(
+                              linkText: linkText,
+                              fireStore: _fireStore,
                             )
-                          ],
-                        ),
-                        onPressed: _textBtnEnabled == true
-                            ? () async {
-                                showSpinner = true;
-                                linkCode = await _fireStore.getCode(linkText);
-                                print(linkCode);
-                                showSpinner = false;
-                                _linkController.clear();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            IdCodeScreen(linkID: linkCode)));
-                              }
-                            : null, //null button if link text is == ""
-                      ),
+                          : DisabledTextButton(),
                     ),
                     SizedBox(
                       height: 40.0,
@@ -118,11 +98,16 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                     TextFormField(
                       controller: _codeController,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter(
+                          RegExp("[0-9]"),
+                        ),
+                      ],
                       maxLength: 5,
                       keyboardType: TextInputType.number,
                       onChanged: (code) {
                         linkCode = int.parse(code);
-                        if (linkCode != null || linkCode > 0) {
+                        if (code.length > 0) {
                           setState(() {
                             _codeBtnEnabled = true;
                           });
@@ -148,38 +133,12 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                     Container(
                       width: 110.0,
-                      child: MaterialButton(
-                          color: Colors.teal,
-                          elevation: 10.0,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                "Get",
-                                style: kButtonTextStyle,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: Icon(
-                                  Icons.cloud_download,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ),
-                          onPressed: _codeBtnEnabled == true
-                              ? () async {
-                                  showSpinner = true;
-                                  linkText = await _fireStore.getLink(linkCode);
-                                  print(linkText);
-                                  _codeController.clear();
-                                  showSpinner = false;
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              GotTextScreen(link: linkText)));
-                                }
-                              : null),
+                      child: _codeBtnEnabled
+                          ? GetTextButton(
+                              linkCode: linkCode,
+                              fireStore: _fireStore,
+                            )
+                          : DisabledCodeButton(),
                     ),
                   ],
                 ),
