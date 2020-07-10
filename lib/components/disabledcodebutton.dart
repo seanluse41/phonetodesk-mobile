@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phone2web/styles/constants.dart';
+
+import '../styles/constants.dart';
 
 class DisabledCodeButton extends StatelessWidget {
   @override

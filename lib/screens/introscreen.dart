@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-import 'package:phone2web/services/firestore.dart';
-
-import 'package:phone2web/components/appbar.dart';
-import 'package:phone2web/components/sidedrawer.dart';
-import 'package:phone2web/components/getcodebutton.dart';
-import 'package:phone2web/components/gettextbutton.dart';
-import 'package:phone2web/components/disabledcodebutton.dart';
-import 'package:phone2web/components/disabledtextbutton.dart';
-
-import 'package:phone2web/styles/constants.dart';
+import '../components/appbar.dart';
+import '../components/disabledcodebutton.dart';
+import '../components/disabledtextbutton.dart';
+import '../components/getcodebutton.dart';
+import '../components/gettextbutton.dart';
+import '../components/sidedrawer.dart';
+import '../services/firestore.dart';
+import '../styles/constants.dart';
 
 class IntroScreen extends StatefulWidget {
   static String id = 'introscreen';

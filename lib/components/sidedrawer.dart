@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:phone2web/screens/introscreen.dart';
-import 'package:phone2web/screens/aboutscreen.dart';
+
+import '../screens/aboutscreen.dart';
+import '../screens/introscreen.dart';
 
 class GlobalDrawer extends StatelessWidget {
   @override

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phone2web/styles/constants.dart';
-import 'package:phone2web/components/appbar.dart';
-import 'package:phone2web/components/sidedrawer.dart';
+
+import '../components/appbar.dart';
+import '../components/sidedrawer.dart';
+import '../styles/constants.dart';
 
 class IdCodeScreen extends StatelessWidget {
   static String id = 'idcodescreen';

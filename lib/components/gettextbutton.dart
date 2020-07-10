@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phone2web/services/firestore.dart';
-import 'package:phone2web/styles/constants.dart';
-import 'package:phone2web/screens/gottextscreen.dart';
+
+import '../screens/gottextscreen.dart';
+import '../services/firestore.dart';
+import '../styles/constants.dart';
 
 class GetTextButton extends StatelessWidget {
   GetTextButton({this.linkCode, this.fireStore});

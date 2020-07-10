@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phone2web/styles/constants.dart';
-import 'package:phone2web/services/firestore.dart';
-import 'package:phone2web/screens/idcodescreen.dart';
+
+import '../screens/idcodescreen.dart';
+import '../services/firestore.dart';
+import '../styles/constants.dart';
 
 class GetCodeButton extends StatelessWidget {
   

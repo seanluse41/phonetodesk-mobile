@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'screens/introscreen.dart';
+
+import 'screens/aboutscreen.dart';
 import 'screens/gottextscreen.dart';
 import 'screens/idcodescreen.dart';
-import 'screens/aboutscreen.dart';
+import 'screens/introscreen.dart';
 
 void main() {
   runApp(MyApp());
